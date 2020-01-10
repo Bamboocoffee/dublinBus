@@ -1,0 +1,503 @@
+.modal {
+    height: 100%;
+    font-weight: normal;
+}
+
+.fares_demographic_button {
+    /* padding: 25px; */
+    margin-left: 55px;
+    width: 130px;
+    height: 100px;
+    border-radius: 5px;
+    background-color: beige;
+}
+
+#date_time {
+    display: none;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.weather-panel {
+    clear: both;
+}
+
+.navbar {
+    padding: 0;
+    margin: 0;
+}
+
+.body {
+    padding: 0;
+    margin: 0;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.viewport {
+    margin: 0;
+    padding: 0;
+
+    min-height: 100%;
+    min-width: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    z-index: 1;
+
+}
+
+#table_container {
+    margin-top: 20%;
+    margin-left: 0;
+}
+
+
+.content {
+    position: absolute;
+    left: 0.5em;
+    top: 4em;
+    right: 0.5em;
+    display: block;
+    height: auto;
+    width: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.popup-button {
+    position: absolute;
+    left: 0;
+    top: 5em;
+    display: none;
+    background-color: white;
+    z-index: 1;
+
+    height: auto;
+    width: auto;
+
+    text-align: center;
+    vertical-align: middle;
+
+    padding: 0;
+    font-size: 1.5em;
+}
+
+.popup-button:hover {
+    background-color: dodgerblue;
+    color: white;
+}
+
+#map {
+    margin-top: 0;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 0;
+}
+
+#fare_calculator {
+    /* display: none; */
+    float: left;
+}
+
+#back {
+    margin-top: 5%;
+    border-radius: 15px;
+
+}
+
+#payment_form {
+    margin-top: 20%;
+}
+
+#dublinBus_logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#stripe_logo {
+    float: right;
+}
+
+#unsuccessful_image {
+    display: block;
+    max-height: 40%;
+    max-width: 40%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#successful_image {
+    display: block;
+    max-height: 40%;
+    max-width: 40%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+input.options_elements {
+    float: right;
+}
+
+.payment_elements {
+    float: right;
+    border: 1px solid #DAA520;
+}
+
+input.payment_element_details {
+    border: none;
+    border-bottom: 1px solid #DAA520;
+}
+
+label {
+    display: block;
+}
+
+#source-input, #destination-input {
+    display: inline-block;
+    font-size: 1em;
+    min-width: 100%;
+    height: 3em;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+
+    padding: 0 1em;
+    outline: none;
+}
+
+#source-input:focus, #destination-input:focus {
+    border-bottom: 1px solid deepskyblue;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+}
+
+
+.previous {
+    background-color: #f1f1f1;
+    color: black;
+}
+
+.round {
+    border-radius: 50%;
+}
+
+table {
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    text-align: left;
+}
+
+tr:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+tr:nth-child(even) {
+    background-color: #F0F8FF;
+}
+
+footer {
+    background-color: #404040;
+    color: white;
+    text-align: center;
+
+}
+
+
+/*
+    Style for Option Panel
+*/
+
+.option {
+    margin: 0;
+    padding: 0 1em;
+    left: 1em;
+    font-size: 0.8em;
+    vertical-align: middle;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+ion-icon[name='arrow-dropright'], .time-option-label {
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.time-option-panel {
+    display: flex;
+    align-items: center;
+}
+
+.time-option-label {
+    flex: 1;
+    width: 90px;
+    padding: 0;
+}
+
+.date-time {
+    margin: 5px 0;
+    padding: 0 1em;
+}
+
+.date-picker-label, .time-picker-label {
+    display: inline-block;
+    width: 50%;
+}
+
+.date-picker-label input, .time-picker-label input {
+    width: 100%;
+}
+
+.route-option {
+    cursor: pointer;
+}
+
+.route-options {
+    margin: 5px 0;
+    padding: 0 1em;
+}
+
+/*
+ Style for Route Card
+*/
+
+.routes {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+}
+
+.routes li {
+    list-style-type: none;
+
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+
+    font-size: 1em;
+    text-align: center;
+
+    vertical-align: middle;
+    cursor: pointer;
+
+    width: 100%;
+    height: auto;
+}
+
+.step-sep {
+    margin: 0 10px;
+}
+
+.walk-icon {
+    margin: 0 5px;
+}
+
+.route-short-name {
+    padding: 0;
+    margin: 0 1px;
+    font-size: 1em;
+}
+
+ion-icon {
+    font-size: 1em;
+}
+
+.steps, .time {
+    pointer-events: none;
+
+    margin: 10px 0;
+
+}
+
+.heading {
+    pointer-events: none;
+    margin: 5px;
+    font-size: 1em;
+}
+
+.time {
+    position: relative;
+}
+
+.card-bus-icon {
+    position: absolute;
+    left: 15px;
+
+    font-size: 1.5em;
+}
+
+.bus-duration {
+    position: absolute;
+    right: 15px;
+}
+
+.prefer-options, .routes-options {
+    display: inline-block;
+    width: 50%;
+    float: left;
+
+    font-size: 0.9em;
+
+    padding: 0;
+    margin: 2px 0;
+}
+
+.prefer-options li, .routes-options li {
+    list-style-type: none;
+}
+
+.start-button, .detail-button {
+    display: inline-block;
+    background-color: dodgerblue;
+    color: white;
+    min-width: 50%;
+
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.detail-button {
+    padding: 2px 0;
+    border-right: 1px solid #e6e6e6;
+    border-bottom-left-radius: 5px;
+}
+
+.start-button {
+    padding: 2px 0;
+    border-left: 1px solid #e6e6e6;
+    border-bottom-right-radius: 5px;
+}
+
+.detail-panel {
+    width: 100%;
+    margin-top: 5px;
+    padding: 0;
+    font-size: 0.9em;
+}
+
+.detail-panel li {
+    border-top: none;
+    border-bottom: 1px solid #e6e6e6;
+    border-left: none;
+    border-right: none;
+}
+
+.detail-item-icon, .detail-item-info {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.detail-item {
+    position: relative;
+    margin-top: 5px;
+}
+
+.detail-item-info {
+    width: 100%;
+}
+
+.detail-item-time {
+    position: relative;
+    left: 25%;
+}
+
+.detail-item-duration {
+    position: absolute;
+    left: 10px;
+}
+
+.detail-item-distance {
+    position: absolute;
+    right: 10px;
+}
+
+.detail-item-icon.walk-icon {
+    position: absolute;
+    left: 15px;
+    font-size: 1.5em;
+
+    height: 80%;
+    vertical-align: middle;
+    border-right: 5px dotted deepskyblue;
+}
+
+.detail-item-icon.bus-icon {
+    position: absolute;
+    left: 15px;
+    font-size: 1.5em;
+
+    height: 80%;
+
+
+    border-right: 5px solid deepskyblue;
+
+    padding-right: 5px;
+}
+
+::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+.stop-panel {
+    display: inline-block;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6e6e6;
+    max-height: 300px;
+    width: 100%;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    overflow-y: scroll;
+}
+
+.stop-panel li {
+    list-style-type: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding: 5px 10px;
+}
+
+.stop-name {
+    font-size: 1em;
+    font-family: Montserrat, serif;
+    text-align: left;
+    margin-left: 0;
+}
+
+.stop-dep-time {
+    font-size: 1em;
+    font-family: Montserrat, serif;
+    float: right;
+}
+
+.stop-info:hover {
+    background-color: #e6e6e6;
+}

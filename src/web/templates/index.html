@@ -1,0 +1,798 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dublin Bus</title>
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<style>
+
+	.modal {
+		height: 200px;
+		weight:100%;
+	}
+
+	.fares_demographic_button {
+		/* padding: 25px; */
+		margin-left: 55px;
+		width: 130px;
+		height: 100px;
+		border-radius: 5px;
+		background-color: beige;
+	}
+
+	#date_time {
+	  display:none;
+	}
+
+	.leaving {
+		height: auto;
+		width: auto;
+		background-color: lightblue;
+		border-radius: 5px;
+
+
+	}
+
+	#walking_info {
+		/* width: calc(100% / 3); */
+		display: flex;
+	}
+
+	#walking_info.div {
+		flex-grow: 1;
+	}
+
+	</style>
+
+	<link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+
+	<link rel="stylesheet" href="{% static 'styles.css' %}">
+
+	<!-- Font Awesome CSS -->
+	<link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+		  integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+		  rel="stylesheet">
+
+	<!-- UIkit CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/css/uikit.min.css" rel="stylesheet"/>
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" rel="stylesheet"/>
+
+
+</head>
+<body>
+
+
+	<div id="myModal" class="modal">
+		<div id="ex1" class="modal">
+			<button id="back" onclick="show_window()"><a href="#" rel="modal:close">Return</a></button>
+			<p></p><br><br><br><br>
+			<div>
+				<button class="fares_demographic_button" onclick="build_table('Adults')"><a href="#ex2" rel="modal:open">Adults</a></button>
+				<button class="fares_demographic_button" onclick="build_table('Children')"><a href="#ex3" rel="modal:open">Children</a></button>
+			</div><br><br><br>
+			<div>
+				<button class="fares_demographic_button" onclick="build_table('Students')"><a href="#ex4" rel="modal:open">Students</a></button>
+				<button class="fares_demographic_button" onclick="build_table('Tourists')"><a href="#ex5" rel="modal:open">Tourists</a></button>
+			</div>
+		</div>
+
+		<div id="ex2" class="modal">
+			<br>
+			<button id="back"><a href="#ex1" rel="modal:open">Return</a></button>
+			<div id="adult">
+			</div>
+		</div>
+		<div id="ex3" class="modal">
+			<br>
+			<button id="back"><a href="#ex1" rel="modal:open">Return</a></button>
+			<div id="children">
+			</div>
+		</div>
+		<div id="ex4" class="modal">
+			<br>
+			<button id="back"><a href="#ex1" rel="modal:open">Return</a></button>
+			<div id="student">
+			</div>
+		</div>
+		<div id="ex5" class="modal">
+			<br>
+			<button id="back"><a href="#ex1" rel="modal:open">Return</a></button>
+			<div id="tourist">
+			</div>
+		</div>
+		<div id="ex6" class="modal">
+			<br>
+			<button id="back"><a href="#ex1" rel="modal:open">Return</a></button>
+			<div id="payment_form">
+				<div>
+					<img id="dublinBus_logo" src="{% static "images/dublinBus.png" %}" alt="Stripe" height="130px" width="160px">
+				</div>
+					<input class="payment_element_details" value="" type="text" placeholder="Forename..." style="width:100%;" ></input><br><br>
+					<input class="payment_element_details" value="" type="text" placeholder="Surname..." style="width:100%;" ></input><br><br>
+					<input id="customer_email" class="payment_element_details" value=""  type="email" placeholder="Email Address..." style="width:100%;" ></input><br><br>
+					<input style="zoom:1.5" type="checkbox"><span class="terms" ><a href="#"><b> I accept Dublin Buses Terms and Conditions</b></a></span><br>
+					<div>
+						<button role="link" id="checkout-button-sku_FWzvX5EMh91Ai0" class="payment_elements">Pay Now</button><br><br><br>
+						<img id="stripe_logo" src="{% static "images/stripe2.png" %}" alt="Stripe" height="90px" width="120px">
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class='container-fluid'>
+
+
+	<div class='row dynamic-columns'>
+		<div class='' id="window" style="width: 400px; display: block;">
+
+			<button class="collapsible" onclick="collapse_window()"
+					style="float:right;height:40px;margin-top:6px;border-radius:5px;"></button>
+
+			<div id='option_container'>
+				<button onclick="options_container()">Back</button>
+				<div class="m-3">
+					<div><i class="fas fa-random"></i> Less Transfer...<input class='options_elements' name="Events"
+																			  type="checkbox"></div>
+					<div><i class="fas fa-shoe-prints"></i> Less Walk...<input class='options_elements' name="Events"
+																			   type="checkbox"></div>
+					<div><i class="fas fa-calendar-check"></i> Events...<input class='options_elements' name="Events"
+																			   type="checkbox"></div>
+
+					<div><i class="fas fa-lightbulb"></i> Lighting...<input class='options_elements' name="Events"
+																			type="checkbox"></div>
+
+					<div><i class="fas fa-wheelchair"></i> Accessibility...<input class='options_elements'
+																				  name="Events" type="checkbox"></div>
+				</div>
+			</div>
+
+			<div id='content'>
+				<!-- Weather widget -->
+				<div id="weather">
+					<a class="weatherwidget-io" data-basecolor=""
+					   data-cloudcolor="#b2d0e3" data-cloudfill="white" data-font="Times New Roman"
+					   data-highcolor="#f0b917" data-icons="Climacons Animated" data-lowcolor="#76b39d"
+					   data-mode="Current"
+					   data-mooncolor="#f0b917" data-raincolor="white" data-textcolor="white" data-theme="original"
+					   href="https://forecast7.com/en/53d35n6d26/dublin/">DUBLIN</a>
+				</div>
+				<!-- Weather widget -->
+
+				<form class='direction_time_form' onchange="find_routes_json();return false">
+					<input class="form-control" id="source-input" placeholder="Where are you travelling from?"
+						   type="text" value="">
+					<input class="form-control" id="destination-input" placeholder="Where do you wish to go?"
+						   type="text" value=""><br>
+					<select onchange="display_dateTime()">
+						<option value="now">Leave now</option>
+						<option value="later">Leave later</optin>
+					</select>
+					<div id="date_time">
+						<input id="date-input" type="date" value="" max='2019-08-11' required>
+						<input id="time-input" type="time" value="" required>
+					</div>
+				</form>
+
+				<div class="routes" id="possible_routes">
+				</div>
+
+				<div id="test">
+				</div>
+
+				<div>
+					<button id="fare_calculator"><a href="#ex1" onclick="hide_window()" rel="modal:open">Fare Calculator</a></button>
+					<button id="options" onclick="options_container()" type="button">Options</button>
+				</div>
+			</div>
+		</div>
+
+		<div class='map' id="map" style="width:100%;height:100%;position:absolute;">>
+		</div>
+
+	</div>
+	</div>
+
+<footer>
+	<p>Team 3 &copy; 2019. All rights reserved</p>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'static.js' %}"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+
+
+		var map;
+		var form_fill = false;
+		var options_open = false;
+		var window_hidden = false;
+		var myInterval = setInterval(check_modal, 1000);
+		var google_route_data;
+		var stripe = Stripe('pk_test_IOmIgjzVJsUiQpkgSXzbbdnp00a5W6q9Lx');
+		var checkoutButton = document.getElementById('checkout-button-sku_FWzvX5EMh91Ai0');
+		var price;
+
+		function five_day_date() {
+			var today = new Date();
+			var today_milliseconds = today.getTime();
+			var millseconds_five_days = (today_milliseconds + 432000000);
+			var five_day = new Date(millseconds_five_days);
+			var year = five_day.getFullYear();
+			var month = (five_day.getMonth()+1);
+			var day = five_day.getDate();
+			if(day<10) {
+	      day='0'+day
+	    }
+	    if(month<10){
+				month='0'+month
+	    }
+			var max = (year+'-'+month+'-'+day);
+			$('#date-input').attr('max', max);
+		};
+
+		function build_table(user) {
+		  var str = '<br>';
+		  var id;
+		  if(user === "Adults") {
+		    id = "adult";
+		  } else if(user === "Children") {
+		    id = "children";
+				str += '<div id="table_container">' +
+				'<table id= ' + id + '>' +
+					'<tr>' +
+						' <th></th> ' +
+						'<th>Leap U(19)</th>' +
+						'<th>Cash (U16)</th>' +
+						'<th>Online Offer</th>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>School Hours (All Stages)</td>'+
+						'<td>€0.80</td>' +
+						'<td>€1.00</td>' +
+						'<td><a onclick=find_sku("€2.00") href="#ex6" rel="modal:open">€2.00</a></td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>All Stages</td>' +
+						'<td>€1.00</td>' +
+						'<td>€1.30</td>' +
+						'<td><a onclick=find_sku("€2.70") href="#ex6" rel="modal:open">€2.70</a></td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>Xpresso</td>' +
+						'<td>€1.26</td>' +
+						'<td>€1.60</td>' +
+						'<td><a onclick=find_sku("€3.50") href="#ex6" rel="modal:open">€3.50</a></td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>Route 90 & 40e</td>' +
+						'<td>€1.00</td>' +
+						'<td>€1.30</td>' +
+						'<td><a onclick=find_sku("€2.00") href="#ex6" rel="modal:open">€2.00</a></td>' +
+					'</tr>'+
+				'</table>';
+		  } else if(user === "Students") {
+		    id = "student";
+		  } else {
+		    id = "tourist";
+		  }
+			if(id === "adult" || id === 'student' || id === 'tourist') {
+				str += '<div id="table_container">' +
+				'<table id= ' + id + '>' +
+					'<tr>' +
+						' <th></th> ' +
+						'<th>Leap</th>' +
+						'<th>Cash</th>' +
+						'<th>Online Offer</th>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>Stages 1 - 3</td>'+
+						'<td>€1.55</td>' +
+						'<td>€2.15</td>' +
+						'<td><a onclick=find_sku("€2.00") href="#ex6" rel="modal:open">€2.00</a></td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>Stages 4 -13</td>' +
+						'<td>€2.25</td>' +
+						'<td>€3.00</td>' +
+						'<td><a onclick=find_sku("€2.70") href="#ex6" rel="modal:open">€2.70</a></td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>Over 13 Stages</td>' +
+						'<td>€2.50</td>' +
+						'<td>€3.30</td>' +
+						'<td><a onclick=find_sku("€3.00") href="#ex6" rel="modal:open">€3.00</a></td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>Xpresso</td>' +
+						'<td>€3.00</td>' +
+						'<td>€3.80</td>' +
+						'<td><a onclick=find_sku("€3.50") href="#ex6" rel="modal:open">€3.50</a></td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td>Route 90 & 40e</td>' +
+						'<td>€1.55</td>' +
+						'<td>€2.15</td>' +
+						'<td><a onclick=find_sku("€2.00") href="#ex6" rel="modal:open">€2.00</a></td>' +
+					'</tr>'+
+				'</table>';
+		}
+		  document.getElementById(id).innerHTML = str;
+		};
+
+	 	function display_dateTime () {
+			if($('#date_time').css("display") === "none") {
+				$('#date_time').css("display", "block");
+				five_day_date();
+			} else {
+				$('#date_time').css("display", "none");
+			}
+		};
+
+		function find_sku(chosen, journey_index) {
+			if(google_route_data != null) {
+				if(google_route_data[journey_index].steps.length > 3) {
+					price = 'sku_FZD8a8cHydrrIe';
+				} else {
+					for(var i = 0; i < google_route_data[journey_index].steps.length; i++) {
+						if(google_route_data[journey_index].steps[i].travel_mode === "TRANSIT") {
+							if(google_route_data[journey_index].steps[i].transit_details.line.short_name === "90" || google_route_data[journey_index].steps[i].transit_details.line.short_name === "40e") {
+								price = 'sku_FX2WdTixwDG4mI';
+								break;
+							}
+						}
+					};
+					if(!price) {
+						if(chosen === "€2.00" || chosen < 3) {
+						price = 'sku_FWzvX5EMh91Ai0';
+					} else if(chosen === "€2.70" || chosen < 13 ) {
+						price = 'sku_FX2VxeVWr9jLcX';
+					} else if(chosen === "€3.00" || chosen > 13) {
+						price = 'sku_FX2Wnc3goLapAm';
+					} else {
+						price = 'sku_FZCwRmGLD2872j';
+					}
+				  };
+				};
+		  } else {
+				if(chosen === "€2.00" || chosen < 3) {
+		    price = 'sku_FWzvX5EMh91Ai0';
+		  } else if(chosen === "€2.70" || chosen < 13 ) {
+		    price = 'sku_FX2VxeVWr9jLcX';
+		  } else if(chosen === "€3.00" || chosen > 13) {
+		    price = 'sku_FX2Wnc3goLapAm';
+		  } else {
+		    price = 'sku_FZCwRmGLD2872j';
+		  }
+		}
+	};
+
+
+		checkoutButton.addEventListener('click', function () {
+		  // When the customer clicks on the button, redirect
+		  // them to Checkout.
+
+		  stripe.redirectToCheckout({
+		    items: [{sku: price, quantity: 1}],
+
+		    // Do not rely on the redirect to the successUrl for fulfilling
+		    // purchases, customers may not always reach the success_url after
+		    // a successful payment.
+		    // Instead use one of the strategies described in
+		    // https://stripe.com/docs/payments/checkout/fulfillment
+		    successUrl: 'http://127.0.0.1:8000/payment_successful',
+		    cancelUrl: 'http://127.0.0.1:8000/payment_unsuccessful',
+		    customerEmail: document.getElementById("customer_email").value,
+		  })
+		  .then(function (result) {
+		    if (result.error) {
+		      // If `redirectToCheckout` fails due to a browser or network
+		      // error, display the localized error message to your customer.
+		      alert(result.error.message);
+		      var displayError = document.getElementById('error-message');
+		      displayError.textContent = result.error.message;
+		    }
+		  });
+		});
+
+		function initMap(journey_index, markers){
+		  var markers = markers;
+
+		  if(markers) {
+				// alert(JSON.stringify(markers, null, 4));
+				var lat = Number(markers[0][0][0]);
+				var lng = Number(markers[0][0][1]);
+		    map = new google.maps.Map(document.getElementById('map'),{center:{lat: lat, lng: lng}, zoom:14});
+		    setAutocomplete();
+		    stop_markers(journey_index,markers);
+
+				var busRouteCoordinates = [];
+				for(var i = 0; i < markers.length; i++) {
+					for(var j = 0; j < markers[i].length; j++) {
+						busRouteCoordinates.push({lat: markers[i][j][0], lng: markers[i][j][1]});
+					};
+				};
+
+				var routePlan = new google.maps.Polyline({
+					path: busRouteCoordinates,
+					geodesic: true,
+					strokeColor: '#87CEFA',
+					strokeOpacity: 1.0,
+					strokeWeight: 5
+				});
+
+				routePlan.setMap(map);
+		  } else {
+		    map = new google.maps.Map(document.getElementById('map'),{center:{lat: 53.350140, lng: -6.266155}, zoom:11});
+		    setAutocomplete();
+		  };
+		};
+
+		function stop_markers(journey_index, bus_markers) {
+			var int = 0;
+			var colour_markers = [`{% static "images/red_MarkerA.png" %}`, `{% static "images/orange_MarkerB.png" %}`, `{% static "images/green_MarkerC.png" %}`];
+			for(var i = 0; i < google_route_data[journey_index].steps.length; i++) {
+				if(google_route_data[journey_index].steps[i].travel_mode === "WALKING") {
+					for(var j = 0; j < google_route_data[journey_index].steps[i].steps.length; j++) {
+						var latitude = google_route_data[journey_index].steps[i].steps[j].end_location.lat;
+						var longitude = google_route_data[journey_index].steps[i].steps[j].end_location.lng;
+						var myLatLng = {lat: Number(latitude), lng: Number(longitude)};
+						var marker = new google.maps.Marker({
+							position: myLatLng,
+							map: map,
+							icon: `http://maps.google.com/mapfiles/ms/icons/blue-dot.png`,
+							draggable: true,
+							title: 'Walking'
+						});
+					}
+				}
+			};
+			for(var i = 0; i < bus_markers.length; i++) {
+				for(var j = 0; j < bus_markers[i].length; j++) {
+					var latitude = bus_markers[i][j][0];
+					var longitude = bus_markers[i][j][1];
+					var myLatLng = {lat: Number(latitude), lng: Number(longitude)};
+					var marker = new google.maps.Marker({
+						position: myLatLng,
+						icon: colour_markers[int],
+						map: map,
+						title: 'Bus Stop'
+					});
+				}
+			}
+			int++;
+		};
+
+		function get_date_time() {
+
+			var time;
+
+			if($('#date_time').css("display") === "none") {
+				var date = new Date();
+				date = date.getTime();
+				time = (parseInt(date/1000)+3600);
+			} else {
+				var date = document.getElementById("date-input").value;
+				date = new Date(date);
+				date = date.getTime();
+				var time = document.getElementById("time-input").value;
+				var time_array = time.split(":")
+				var hour = Number(time_array[0]);
+				var minutes = Number(time_array[1]);
+				var total_minutes = ((hour * 60)+minutes);
+				var total_milliseconds = total_minutes * 60000;
+				total_seconds = ((date + total_milliseconds)/1000);
+				time = total_seconds;
+			}
+			return time;
+		};
+
+    function find_routes_json() {
+				$('#window').css('height', 'auto');
+				$('#possible_routes').css('height', '0px');
+				$('#stops').css('display', 'none');
+        var source = document.getElementById("source-input").value;
+        var destination = document.getElementById("destination-input").value;
+				var time = get_date_time();
+        source = String(source);
+        destination = String(destination);
+				time = String(time);
+        var path = 'routes/' + source + '/' + destination + '/' + time;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                form_fill = true;
+                var myObj = JSON.parse(this.responseText);
+								if(myObj.length < 1 ) {
+									alert("Please ensure you have a full address chosen from the dropdown");
+									document.getElementById("source-input").value = "";
+					        document.getElementById("destination-input").value = "";
+								} else {
+                	bus_routes(myObj);
+								}
+							}
+        };
+        xhttp.open("GET", path, true);
+        xhttp.send();
+    }
+
+		function bus_routes(buses_obj) {
+				document.getElementById("test").innerHTML = "";
+				google_route_data = buses_obj;
+        var data = buses_obj;
+        var str = '<br>';
+        var int = 1;
+				var bus_number = 0;
+				var journey_time = 0;
+        for (var i = 0; i < data.length; i++) {
+					if(data[i].steps.length === 3) {
+						str += '<button onclick=find_route_times(' + (int-1) + ') class="list-group-item list-group-item-action active">' +
+										'<div class="d-flex justify-content-between">' +
+										'<span class="badge badge-success badge-pill">' + int + '</span>';
+						for(var j = 0; j < data[i].steps.length; j++) {
+							if((data[i].steps[j].travel_mode === "TRANSIT") && bus_number === 0) {
+								str += '<h10 class="mb-1">' + data[i].steps[j].transit_details.line.short_name + '</h10>';
+								time = data[i].steps[j].duration.value;
+								journey_time += time;
+								bus_number++;
+							} else if(data[i].steps[j].travel_mode === "WALKING") {
+								time = data[i].steps[j].duration.value;
+								journey_time += time;
+							} else {
+								time = data[i].steps[j].duration.value;
+								journey_time += time;
+							}
+						}
+							total_journey_time = Math.round((journey_time / 60));
+	            str += '<small value>Estimated '+ total_journey_time + ' min</small>' +
+	            '</div>' +
+	            '<small>.....</small>' +
+	            '</button><br>';
+	            int++;
+							bus_number = 0;
+							journey_time = 0;
+						} else {
+							str += '<button onclick=find_route_times(' + (int-1) + ') class="list-group-item list-group-item-action active">' +
+											'<div class="d-flex justify-content-between">' +
+											'<span class="badge badge-warning badge-pill">' + int + '</span>';
+							for(var j = 0; j < data[i].steps.length; j++) {
+								if((data[i].steps[j].travel_mode === "TRANSIT") && bus_number === 0) {
+									str += '<h10 class="mb-1">' + data[i].steps[j].transit_details.line.short_name + '</h10>';
+									time = data[i].steps[j].duration.value;
+									journey_time += time;
+									bus_number++;
+								} else if(data[i].steps[j].travel_mode === "WALKING") {
+									time = data[i].steps[j].duration.value;
+									journey_time += time;
+								} else {
+									time = data[i].steps[j].duration.value;
+									journey_time += time;
+								}
+							}
+								total_journey_time = Math.round((journey_time / 60));
+								str += '<small value>Estimated '+ total_journey_time + ' min</small>' +
+								'</div>' +
+								'<small style="margin-right:30px;">.....</small>' +
+								'</button><br>';
+								int++;
+								bus_number = 0;
+								journey_time = 0;
+						};
+        }
+        $('#window').css('height', '650px');
+        $('#possible_routes').css('height', '335px');
+				$('#possible_routes').css('overflow', 'scroll');
+        document.getElementById("possible_routes").innerHTML = str;
+		};
+
+
+		function get_seconds_since_midnight() {
+
+			var seconds_since_midnight;
+
+			if($('#date_time').css("display") === "none") {
+				var date = new Date();
+				var year = date.getFullYear();
+				var month = date.getMonth();
+				var day_of_month = date.getDate();
+				var milliseconds_to_date = Date.UTC(year,month,day_of_month);
+				var seconds_to_date = (milliseconds_to_date / 1000);
+				var current_seconds = (parseInt(date/1000)+3600);
+				var	seconds_today = current_seconds - seconds_to_date;
+				seconds_since_midnight = seconds_today;
+
+			} else {
+				var time = document.getElementById("time-input").value;
+				var time_array = time.split(":")
+				var hour = Number(time_array[0]);
+				var minutes = Number(time_array[1]);
+				var total_minutes = ((hour * 60)+minutes);
+				seconds_since_midnight = total_minutes * 60;
+			}
+
+			return seconds_since_midnight;
+		}
+
+		function days_since_start_2018() {
+
+			var current_milliseconds = Date.now();
+			var jan_18_millseconds = Date.parse('2018, 01, 01');
+			days_since_start_2018 = parseInt(((current_milliseconds - jan_18_millseconds)/1000)/86400);
+
+			return days_since_start_2018;
+		};
+
+		function find_route_times(journey_index) {
+			var bus_stop_arrival_times = find_route_times_json(journey_index);
+			find_route_stops(journey_index, bus_stop_arrival_times);
+		};
+
+    function find_route_times_json(journey_index) {
+			var bus_stop_arrival_times = [];
+			t_minus_1118 = days_since_start_2018();
+			var	time_count = get_seconds_since_midnight();
+			for(var i = 0; i < google_route_data[journey_index].steps.length; i++) {
+				if(google_route_data[journey_index].steps[i].travel_mode === "TRANSIT") {
+					var route_id = google_route_data[journey_index].steps[i].transit_details.line.short_name;
+					var stop_ids = [google_route_data[journey_index].steps[i].transit_details.departure_stop.id, google_route_data[journey_index].steps[i].transit_details.arrival_stop.id]
+					var current_time_seconds = get_date_time();
+					time = current_time_seconds * 1000;
+					time = new Date(time);
+					month = time.getMonth();
+					day_of_week = time.getDay();
+					var planned_time_of_arrival = [time_count, (time_count + google_route_data[journey_index].steps[i].duration.value)]
+					route_id = route_id;
+					// Need to source the stop_id. Then pass the stop_id of the source and destination. Then it should work
+					for(var j = 0; j < stop_ids.length; j++) {
+						var path = 'predict/' + route_id + '/' + stop_ids[j] + '/' + planned_time_of_arrival[j] + '/' + day_of_week + '/' + (month+1) + '/' + current_time_seconds + '/' + t_minus_1118;
+						var xhttp = new XMLHttpRequest();
+						xhttp.open("GET", path, false);
+						xhttp.send();
+						if(xhttp.responseText === null) {
+							alert("No prediction, sorry!");
+						} else {
+						var myObj = xhttp.responseText;
+						bus_stop_arrival_times.push(myObj);
+						}
+					}
+					time_count += google_route_data[journey_index].steps[i].duration.value;
+				} else {
+					time_count += google_route_data[journey_index].steps[i].duration.value;
+				}
+			}
+			// document.getElementById("test").innerHTML = bus_stop_arrival_times;
+			return bus_stop_arrival_times;
+    };
+
+    function find_route_stops(journey_index, bus_stop_arrival_times) {
+			var stops_list_json = find_route_stops_json(journey_index);
+			bus_stops(journey_index, stops_list_json, bus_stop_arrival_times);
+		}
+
+		function find_route_stops_json(journey_index) {
+			var stops_list_coordinates = [];
+			for(var i = 0; i < google_route_data[journey_index].steps.length; i++) {
+				if(google_route_data[journey_index].steps[i].travel_mode === "TRANSIT") {
+					var trip_id = google_route_data[journey_index].steps[i].transit_details.line.short_name;
+					var start_location_lat = google_route_data[journey_index].steps[i].start_location.lat;
+					var start_location_lng = google_route_data[journey_index].steps[i].start_location.lng;
+					var end_location_lat = google_route_data[journey_index].steps[i].end_location.lat;
+					var end_location_lng = google_route_data[journey_index].steps[i].end_location.lng;
+					var date = new Date();
+					date = date.toISOString();
+	        var path = 'stops/' + trip_id + '/' + [start_location_lat, start_location_lng] + '/' + [end_location_lat, end_location_lng] + '/' + date;
+	        var xhttp = new XMLHttpRequest();
+					xhttp.open("GET", path, false);
+					xhttp.send();
+	     		var myObj = JSON.parse(xhttp.responseText);
+					stops_list_coordinates.push(myObj);
+			 };
+		  };
+			return stops_list_coordinates;
+    };
+
+    function bus_stops(journey_index, stops_list, bus_stop_arrival_times) {
+				$('#possible_routes').css('overflow', 'hidden');
+	      var bus_stops_data = stops_list;
+	      var str = '<div id="stops" class="container"><br>';
+				var all_bus_markers = [];
+				var walking_markers = [];
+				var route_count = 0;
+				for(var i = 0; i < google_route_data[journey_index].steps.length; i++) {
+					if(google_route_data[journey_index].steps[i].travel_mode === "WALKING") {
+			        str += '<div id="walking_info">' +
+									'<div><img id="walking" src="{% static "images/walking.png" %}" alt="walking" height="40px" width="40px"></div>' +
+									'<div style="text-align: center;vertical-align: middle;"><h5>' + google_route_data[journey_index].steps[i].html_instructions + '</h5></div>' +
+			            '<div style="margin-left:5px;"><small>' + google_route_data[journey_index].steps[i].duration.text + '</small></div>' +
+			            '</div><br>';
+						walking_markers.push(google_route_data[journey_index].steps[i].steps);
+					} else {
+							var trip_time = parseInt((bus_stop_arrival_times[1] - bus_stop_arrival_times[0])/60);
+							// alert(JSON.stringify(bus_stop_arrival_times, null, 4));
+							// document.getElementById("test").innerHTML = bus_stop_arrival_times[0];
+							for(var y = 0; y < bus_stops_data.length; y++) {
+								bus_markers = [];
+								for(var x = 0; x < bus_stops_data[y].length; x++) {
+									var latitude = bus_stops_data[y][x].Stn.y;
+									var longitude = bus_stops_data[y][x].Stn.x;
+									bus_markers.push([latitude, longitude]);
+								}
+								str += '<div id="walking_info">' +
+										'<div><img id="greenBus" src="{% static "images/greenBus.png" %}" alt="greenBus" height="40px" width="40px"></div>' +
+										'<div style="text-align: center;vertical-align: middle;"><h5>' + google_route_data[journey_index].steps[i].html_instructions + '</h5></div>' +
+										'<div style="margin-left:15px;"><small>' + trip_time + 'mins</small></div>' +
+										'</div><br>';
+								all_bus_markers.push(bus_markers);
+							}
+							route_count++;
+					}
+				};
+				initMap(journey_index, all_bus_markers);
+				var stops_count = all_bus_markers[0].length;
+				// alert(JSON.stringify(all_bus_markers, null, 4));
+				// document.getElementById("test").innerHTML = stops_count;
+				find_sku(stops_count, journey_index);
+        str += '<button id="fare_calculator"><a href="#ex6" onclick="hide_window()" rel="modal:open">Pre-Pay Trip</a></button>' +
+								'</div>';
+				$('#fare_calculator').css('display', 'block');
+        $('#window').css('height', '650px');
+        $('#possible_routes').css('height', '335px');
+				$("#possible_routes").empty();
+        document.getElementById("possible_routes").innerHTML = str;
+        $('#stops').css('height', '300px');
+    };
+
+    //moved the setting up of the autocomplete boxes to another function
+    function setAutocomplete() {
+        var originInput = document.getElementById('source-input');
+        var destinationInput = document.getElementById('destination-input');
+
+        // define a center and circle for our autocomplete search, this makes it so that it's biased toward this area when
+        // searching for a place name
+        var center = new google.maps.LatLng(53.33306, -6.24889);
+        var circle = new google.maps.Circle({
+            center: center,
+            radius: 10000
+        });
+        // setting up the autcomplete and adding the bound circle of 10KM for suggestions
+        var originAutocomplete = new google.maps.places.Autocomplete(originInput);
+        var destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput);
+        originAutocomplete.setBounds(circle.getBounds());
+        destinationAutocomplete.setBounds(circle.getBounds());
+    }
+
+</script>
+
+<!-- Weather widget -->
+<script>
+    !function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (!d.getElementById(id)) {
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://weatherwidget.io/js/widget.min.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }
+    }(document, 'script', 'weatherwidget-io-js');
+</script>
+<!-- Weather widget -->
+
+<script async
+		defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAV1hXTPXKXV0b5kZq5_m1nnoi3ndfviVg&libraries=places&callback=initMap"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script crossorigin="anonymous"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit-icons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+</body>
+
+</html>

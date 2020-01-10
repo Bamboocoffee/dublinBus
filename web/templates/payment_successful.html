@@ -1,0 +1,23 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Dublin Bus - Yay!</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+  </head>
+  <body>
+    <div style="height:100vh;"><br><br><br><br><br><br><br><br><br><br><br><br>
+      <h1 style="text-align:center">Waaahoooo!! Succcess</h1>
+      <img id="successful_image" src="{% static "gifs/success.gif" %}" alt="Success" height="200px" width="400px">
+    </div>
+  </body>
+
+  <script>
+
+  setTimeout(function(){
+    window.location.href = 'http://127.0.0.1:8000/';
+  }, 3000);
+
+  </script>
+</html>
